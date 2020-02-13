@@ -26,20 +26,19 @@
 
   <section class="horizontal">
     <section id="chatroom">
-      
+      <% if (room) { %>
+        <h1><%= room %></h1>
+      <% } %>
       <section id="feedback"></section>
       <br><br><br>
     </section>
     <section id="roomlist">
       <h1 style=>Room List</h1>
       <br>
-      <!-- <button class="room" id="room1">Room 1</button>
-      <button class="room" id="room2">Room 2</button>
-      <button class="room" id="room3">Room 3</button> -->
-      <a href="./room1">Room 1</a>
-      <a href="./room2">Room 2</a>
-      <a href="./room3">Room 3</a>
-
+      <button class="room" id="room1" onclick="location.href='./room1'">Room 1</button>
+      <button class="room" id="room2" onclick="location.href='./room2'">Room 2</button>
+      <button class="room" id="room3" onclick="location.href='./room3'">Room 3</button>
+      
     </section>
   </section>
 

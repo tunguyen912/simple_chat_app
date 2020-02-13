@@ -6,14 +6,13 @@ app.set('views', './views');
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('index', { room: ""})
 })
 
 //Testing
 app.get('/:id', function(req, res) {
     // res.send('id: ' + req.params.id);
-    res.render('index2', { room: req.params.id})
-
+    res.render('index', { room: req.params.id})
 });
 //
 
@@ -22,7 +21,6 @@ server = app.listen(3000);
 const io =require('socket.io')(server)
 io.on('connection', (socket) => {
     console.log('New user connected')
-
     socket.username = "Anonymous"
 
     socket.on('change_username', (data)=>{
