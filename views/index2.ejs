@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" const="text/html;charset=UTF-8" />
+  <link href="http://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- Export socket.io on client side -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+  <title>Simple Chat App</title>
+</head>
+
+<body>
+  <header>
+    <h1>Simple Chat App</h1>
+  </header>
+
+  <section>
+    <div id="change_username">
+      <input id="username" type="text" />
+      <button id="send_username" type="button">Change username</button>
+    </div>
+  </section>
+
+  <section class="horizontal">
+    <section id="chatroom">
+      <% if (room) { %>
+        <h1><%= room %></h1>
+      <% } %>
+      <section id="feedback"></section>
+      <br><br><br>
+    </section>
+    <section id="roomlist">
+      <h1 style=>Room List</h1>
+      <br>
+      <!-- <button class="room" id="room1">Room 1</button>
+      <button class="room" id="room2">Room 2</button>
+      <button class="room" id="room3">Room 3</button> -->
+      <a href="./room1">Room 1</a>
+      <a href="./room2">Room 2</a>
+      <a href="./room3">Room 3</a>
+
+    </section>
+  </section>
+
+  <section id="input_zone">
+    <input id="message" class="vertical-align" type="text" />
+    <button id="send_message" class="vertical-align" type="button">Send</button>
+  </section>
+
+  <!-- Export socket.io on client side -->
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="chat.js"></script>
+</body>
+
+</html>
