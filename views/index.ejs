@@ -17,6 +17,7 @@
         <h1>Simple Chat App</h1>
     </header>
 
+    
     <section>
         <div id="create_room">
             <input id="new_room" type="text" />
@@ -29,13 +30,14 @@
         </section>
         <section id="roomlist">
             <h1>Room List</h1>
-            <h2>Change your room to:</h2>
+            <h2>Join Room:</h2>
             <select id="rooms">
                 <option selected="true" disabled="disabled">--Please choose a room--</option>
                 <option value="Public">Public</option>
             </select>
             <br><br>
             <h1 id="currentRoom"></h1>
+            <h1 id="currentActive"></h1>
         </section>
 
         
@@ -45,7 +47,6 @@
         <input id="message" class="vertical-align" type="text" />
         <button id="send_message" class="vertical-align" type="button">Send</button>
     </section>
-
     <!-- Export socket.io on client side -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="chat.js"></script>

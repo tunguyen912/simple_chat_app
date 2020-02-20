@@ -8,19 +8,23 @@ $(function(){
     var feedback = $("#feedback")
     var rooms = $("#rooms")
     var currentRoom = $("#currentRoom")
+    var currentActive = $("#currentActive")
     
     send_new_room.click(() => {
         socket.emit('send_new_room', {new_room: new_room.val()})
+        rooms.append(`<option value="${new_room.val()}" selected="selected">${new_room.val()}</option>`) 
         new_room.val('')
     })
 
     socket.on('update_room', (data) => {
         currentRoom.html('')
+        currentActive.html('')
         currentRoom.append(`<h1>Current Room: ${data.currentRoom}</h1>`)
-
+        currentActive.append(`<h1>There are ${data.currentActive} participants</h1>`)
+        chatroom.html('')
     })
     socket.on('update_room_list', (data) =>{
-        rooms.append(`<option value="${data.newRoom}" selected="selected">${data.newRoom}</option>`) 
+        rooms.append(`<option value="${data.newRoom}">${data.newRoom}</option>`) 
     })
 
     $("select#rooms").change(function(){
@@ -28,6 +32,10 @@ $(function(){
         socket.emit('change_room', {destinationRoom: selectedRoom})
     });
 
+    socket.on('update_participant', (data) =>{
+        currentActive.html('')
+        currentActive.append(`<h1>There are ${data.currentActive} participants</h1>`)
+    })
     // Send message
     send_message.click(() => {
         socket.emit('new_message', {message: message.val()})
