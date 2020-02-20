@@ -9,34 +9,34 @@ app.get('/', (req, res) => {
     res.render('index', { room: ""})
 })
 
-//Testing
-app.get('/:id', function(req, res) {
-    // res.send('id: ' + req.params.id);
-    res.render('index', { room: req.params.id})
-});
-//
-
 server = app.listen(3000);
 
 const io =require('socket.io')(server)
 io.on('connection', (socket) => {
-    console.log('New user connected')
-    socket.username = "Anonymous"
+    console.log(socket.id + ' connected')
+    socket.username = socket.id
+    // socket.Room = 'Pulic'
 
-    socket.on('change_username', (data)=>{
-        socket.broadcast.emit('change_username', {username: data.username, oldUsername: socket.username})
-        socket.username = data.username
+    socket.on('send_new_room', (data)=>{
+        socket.leave(socket.Room)
+        socket.Room = data.new_room
+        socket.join(socket.Room)
+        io.sockets.emit('update_room_list', {newRoom: data.new_room})
+        socket.emit('update_room', {currentRoom: socket.Room})
     })
-    
 
-    socket.on('change_room', (data)=>{
+    socket.on('change_room', (data) =>{
+        socket.leave(socket.Room)
+        socket.Room = data.destinationRoom
+        socket.join(data.destinationRoom)
+        socket.emit('update_room', {currentRoom: socket.Room})
     })
 
     socket.on('new_message', (data) => {
-        socket.broadcast.emit('new_message', {message: data.message, username: socket.username})
+        socket.broadcast.in(socket.Room).emit('new_message', {message: data.message, username: socket.username})
     })
 
     socket.on('typing', () => {
-        socket.broadcast.emit('typing', {username: socket.username})
+        socket.broadcast.in(socket.Room).emit('typing', {username: socket.username})
     })
 })

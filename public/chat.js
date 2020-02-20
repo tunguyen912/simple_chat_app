@@ -2,37 +2,31 @@ $(function(){
     var socket = io.connect('http://localhost:3000')
     var message = $("#message")
     var send_message = $("#send_message")
-    var username = $("#username")
-    var send_username = $("#send_username")
+    var new_room = $("#new_room")
+    var send_new_room = $("#send_new_room")
     var chatroom = $("#chatroom")
     var feedback = $("#feedback")
+    var rooms = $("#rooms")
+    var currentRoom = $("#currentRoom")
     
-    // var room1 = $("#room1")
-    // var room2 = $("#room2")
-    // var room3 = $("#room3")
-    // room1.click(() => {
-    //     socket.emit('change_room', {room: room1.text()})
-    //     console.log(room1.text())
-    // })
-    // room2.click(() => {
-    //     socket.emit('change_room', {room: room2.text()})
-    //     console.log(room2.text())
-    // })
-    // room3.click(() => {
-    //     socket.emit('change_room', {room: room3.text()})
-    //     console.log(room3.text())
-    // })
-
-
-    send_username.click(() => {
-        socket.emit('change_username', {username: username.val()})
-        chatroom.append(`<p class = 'message' id='self'><i>You changed your username to ${username.val()}</i></p>`)
-        username.val('')
+    send_new_room.click(() => {
+        socket.emit('send_new_room', {new_room: new_room.val()})
+        new_room.val('')
     })
 
-    socket.on('change_username', (data) => {
-        chatroom.append(`<p class = 'message'><i>${data.oldUsername} changed name to ${data.username}</i></p>`)
+    socket.on('update_room', (data) => {
+        currentRoom.html('')
+        currentRoom.append(`<h1>Current Room: ${data.currentRoom}</h1>`)
+
     })
+    socket.on('update_room_list', (data) =>{
+        rooms.append(`<option value="${data.newRoom}" selected="selected">${data.newRoom}</option>`) 
+    })
+
+    $("select#rooms").change(function(){
+        let selectedRoom = $(this).children("option:selected").val();
+        socket.emit('change_room', {destinationRoom: selectedRoom})
+    });
 
     // Send message
     send_message.click(() => {

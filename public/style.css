@@ -22,11 +22,11 @@ h1{
     text-align: center;
 }
   
-div#change_username, section#input_zone {
+div#create_room, section#input_zone{
     border: 5px outset #8258FA;
 }
   
-div#change_username {
+div#create_room{
     height: 3%;
     display: inline-block;
     background-color: #BCA9F5;
@@ -109,10 +109,4 @@ p.message#self{
     text-align: right;
     background-color: #81DAF5;
 }
-/* .message:nth-child(even) {
-    background-color: #81DAF5;
-}
-  
-.message:nth-child(odd) {
-    background-color: #81BEF7;
-} */
+
