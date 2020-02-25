@@ -1,0 +1,94 @@
+*{
+    box-sizing: border-box;
+}
+  
+html{
+    height: 100%;
+}
+  
+body{
+    margin: 0px;
+    height: 100%;
+}
+  
+header{
+    text-align: center;
+}
+  
+h1{
+    font-family: 'Comfortaa', sans-serif;
+    margin: 0px;
+    text-align: center;
+}
+div#create_room, section#input_zone{
+    border: 5px outset rgb(95, 92, 97);
+}
+div#create_room{
+    height: 3%;
+    display: inline-block;
+    background-color: rgb(29, 24, 44);
+}
+
+.mainPage{
+    height: 100%;
+    /* display: none; */
+}
+
+.horizontal {
+    height: 85%;
+}
+section#chatroom {
+    border: 5px inset rgb(116, 108, 138);
+    height: 100%;
+    overflow: auto;
+    width: 80%;
+} 
+section#roomlist{
+    width: 20%;
+    border: 5px inset rgb(116, 108, 138);
+    height: 100%;
+    overflow: auto;
+}
+section > section#chatroom { float:left; }
+section > section 
+
+
+.vertical-align {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+p.message {
+    margin: 0px;
+    width: 100%;
+    height: 40px;
+    font-size: 2vh;
+    font-family: 'Comfortaa', sans-serif;
+    padding: 1vh;
+    background-color: #81BEF7;
+}
+p.message#self{
+    text-align: right;
+    background-color: #81DAF5;
+}
+/* Input Zone */
+section#input_zone {
+    height: 7%;
+    text-align: center;
+    background-color: rgb(200, 198, 206);
+}
+input#message {
+    display: inline-block;
+    width: 88%;
+    height: 70%;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 2vh;
+}
+button#send_message {
+    display: inline-block;
+    height: 70%;
+    width: 10%;
+}

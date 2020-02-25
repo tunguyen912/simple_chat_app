@@ -9,13 +9,17 @@ $(function(){
     var rooms = $("#rooms")
     var currentRoom = $("#currentRoom")
     var currentActive = $("#currentActive")
-    
+   
+
+   
+    //New room
     send_new_room.click(() => {
         socket.emit('send_new_room', {new_room: new_room.val()})
         rooms.append(`<option value="${new_room.val()}" selected="selected">${new_room.val()}</option>`) 
         new_room.val('')
     })
 
+    //Change room
     socket.on('update_room', (data) => {
         currentRoom.html('')
         currentActive.html('')
@@ -36,13 +40,13 @@ $(function(){
         currentActive.html('')
         currentActive.append(`<h1>There are ${data.currentActive} participants</h1>`)
     })
+
     // Send message
     send_message.click(() => {
         socket.emit('new_message', {message: message.val()})
         chatroom.append(`<p class = 'message' id='self'>${message.val()}</p>`)
         message.val('')
     })
-
     socket.on('new_message', (data) => {
         chatroom.append(`<p class = 'message'> ${data.username}: ${data.message}</p>`)
         feedback.html("")
@@ -52,7 +56,6 @@ $(function(){
     message.bind('keypress', () =>{
         socket.emit('typing');
     })
-
     socket.on('typing', (data) => {
         feedback.html("<p><i>" + data.username +" is typing a message...." + "</i></p>")
     })
