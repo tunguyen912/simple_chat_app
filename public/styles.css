@@ -35,7 +35,10 @@ div#create_room{
 }
 
 .horizontal {
-    height: 85%;
+    height: 80%;
+}
+#feedback{
+    height: 5%;
 }
 section#chatroom {
     border: 5px inset rgb(116, 108, 138);

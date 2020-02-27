@@ -10,10 +10,14 @@ $(function(){
     var currentRoom = $("#currentRoom")
     var currentActive = $("#currentActive")
    
+    var username = prompt("What is your username?");
+    if(username === undefined) username = 'Anonymous'
+    socket.emit('change_username', {username})
 
    
-    //New room
+    //Create new room
     send_new_room.click(() => {
+        //get room list from database
         socket.emit('send_new_room', {new_room: new_room.val()})
         rooms.append(`<option value="${new_room.val()}" selected="selected">${new_room.val()}</option>`) 
         new_room.val('')
