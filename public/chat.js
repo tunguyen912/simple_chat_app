@@ -11,17 +11,26 @@ $(function(){
     var currentActive = $("#currentActive")
    
     var username = prompt("What is your username?");
-    if(username === undefined) username = 'Anonymous'
+    if(username === undefined || username === null || username === '') username = 'Anonymous'
     socket.emit('change_username', {username})
 
+
    
-    //Create new room
+    //Create new room (done)
     send_new_room.click(() => {
-        //get room list from database
         socket.emit('send_new_room', {new_room: new_room.val()})
-        rooms.append(`<option value="${new_room.val()}" selected="selected">${new_room.val()}</option>`) 
         new_room.val('')
     })
+    socket.on('update_current_room', (data) => {
+        roomId = `#${data.new_room}Room`
+        let index = $( "option" ).index($(roomId))
+        console.log(index)
+        rooms.prop("selectedIndex", index);
+    })
+    socket.on('add_and_update_current_room', (data) => {
+        rooms.append(`<option value="${data.new_room}" selected="selected">${data.new_room}</option>`)
+    })
+
 
     //Change room
     socket.on('update_room', (data) => {
@@ -41,6 +50,10 @@ $(function(){
     });
 
     socket.on('update_participant', (data) =>{
+        currentActive.html('')
+        currentActive.append(`<h1>There are ${data.currentActive} participants</h1>`)
+    })
+    socket.on('update_active_participant', (data) =>{
         currentActive.html('')
         currentActive.append(`<h1>There are ${data.currentActive} participants</h1>`)
     })
