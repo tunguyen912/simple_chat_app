@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const { Message, User, Room } = require('./models/model')
 
 
-mongoose.connect('mongodb+srv://tunguyen:Anhtu129@cluster0-nttfq.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('', { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.set('view engine', 'ejs')
 app.set('views', './views');
