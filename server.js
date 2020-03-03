@@ -2,11 +2,16 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+
 //Models
-const { Message, User, Room } = require('./models/model')
+const { Message, Event, Room } = require('./models/model')
 
 
-mongoose.connect('', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://tunguyen:Anhtu129@cluster0-nttfq.mongodb.net/test?retryWrites=true&w=majority',
+ { useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useCreateIndex: true
+})
 
 app.set('view engine', 'ejs')
 app.set('views', './views');
@@ -21,118 +26,101 @@ app.get('/', (req, res) => {
     })
 })
 
+app.get('/api/history', (req, res) => {
+    Message.find({}).exec((err, messages) => {
+        if(err) res.send('Something went wrong!!!')
+        res.json(messages)
+    })
+})
 
 server = app.listen(3000);
 
 const io = require('socket.io')(server)
 io.on('connection', (socket) => {
 
-    console.log(socket.id + ' connected')
     socket.on('change_username', (data) => {
         socket.username = data.username
-        console.log(`${socket.id} changes name to ${socket.username}`)
-        var newUser = new User({ userName: socket.username, user_socket_id: socket.id })
-        newUser.save((err) => {
-            if (err) console.log(err.message)
-            console.log(newUser.userName + " added to the database")
-        })
+        //Connecting event
+        let newEvent = new Event({ username: socket.username, event: "Connected" })
+        newEvent.save()
+        .then(() => console.log("New connecting event added"))
+        .catch((err) => console.log(err.message))
     })
 
-    //disconnect
+    //Disconnect
     socket.on('disconnect', () => {
-        console.log(`${socket.username} disconnected!!!`)
         if (socket.adapter.rooms[socket.Room] !== undefined) {
             socket.broadcast.in(socket.Room).emit('update_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
         }
-        User.findOne({ user_socket_id: socket.id }, (err, user) =>{
-            if(err) console.log(err.message)
-            Room.findByIdAndUpdate(user.currentRoomId, { "$pull": { "users": user._id } }, (err) => {
-                if(err) console.log(err.message)
-                console.log('removed deleted user from room list')
-            })
-            User.findByIdAndDelete(user.currentRoomId, (err) => {
-                if(err) console.log(err.message)
-                console.log('Successfully deleted')
-            })
-        })
+        //Disconnecting event
+        let newEvent = new Event({ username: socket.username, event: "Disconnected" })
+        newEvent.save()
+        .then(() => console.log("New disconnecting event added"))
+        .catch((err) => console.log(err.message))
     })
 
     //Create new room
     socket.on('send_new_room', (data) => {
-        socket.leave(socket.Room)
-        //Leave room
+        //Leave current room if you're in a room
+        if(typeof socket.Room != 'undefined' && socket.Room){
+            socket.leave(socket.Room)
+            let newEvent = new Event({ username: socket.username, event: "Leave room", source: socket.Room })
+            newEvent.save()
+            .then(() => console.log("New leaving event added"))
+            .catch((err) => console.log(err.message))
+        }
 
         socket.Room = data.new_room
+
         // Add new room to the database
-        User.findOne({ user_socket_id: socket.id }, (err, user) => {
-            if (err) {
-                console.log(err.message)
-            } else {
-                let newRoom = new Room({ roomName: data.new_room, users: [user] })
-                newRoom.save((err) => {
-                    if (err) {
-                        if(err.code === 11000){
-                            console.log('Duplicate name, moving to existing room!!!')
-                            socket.emit('update_current_room', {new_room: data.new_room})
-                            //Update user's roomId
-                            // Room.findOneAndUpdate({roomName: data.new_room}, { "$push": { "users": user._id } }).exec((err, room) => {
-                            //     if(err) console.log(err.message) 
-                            //     User.findByIdAndUpdate(user._id, { currentRoomId: room._id }, (err) => {
-                            //         if (err) {
-                            //             console.log(err.message)
-                            //         } else {
-                            //             console.log('change room id Success')
-                            //         }
-                            //     })
-                            // })
-                        }
-                    } else {
-                        console.log(`${newRoom.roomName} added to the database`)
-                        socket.broadcast.in(socket.Room).emit('update_active_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
-                        socket.broadcast.emit('update_room_list', { newRoom: data.new_room });
-                        socket.emit('add_and_update_current_room', {new_room: data.new_room})
-                        User.findByIdAndUpdate(user._id, { currentRoomId: newRoom._id }, (err) => {
-                            if (err) {
-                                console.log(err.message)
-                            } else {
-                                console.log('change room id Success')
-                            }
-                        })
-                    }
-                })
+        let newRoom = new Room({ roomName: data.new_room })
+        newRoom.save()
+        .then(() => {
+            //If create new room successfully move user to that room
+            console.log(`${data.new_room} created`)
+            socket.broadcast.in(socket.Room).emit('update_active_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
+            socket.broadcast.emit('update_room_list', { newRoom: data.new_room });
+            socket.emit('add_and_update_current_room', {new_room: data.new_room})
+            let newEvent = new Event({ username: socket.username, event: "Join room", source: socket.Room })
+            newEvent.save()
+            .then(() => console.log("New joining event added"))
+            .catch((err) => console.log(err.message))
+        })
+        .catch((err) => {
+            //Check if the room exists, if yes move user to that room
+            if(err.code === 11000) {
+                console.log('Duplicate name, moving to existing room!!!')
+                socket.emit('update_current_room', {new_room: data.new_room})
+                let newEvent = new Event({ username: socket.username, event: "Join room", source: socket.Room })
+                newEvent.save()
+                .then(() => console.log("New joining event added"))
+                .catch((err) => console.log(err.message))
             }
+            console.log(err.message)
         })
         socket.join(socket.Room)
-        
-
         if (socket.adapter.rooms[socket.Room] !== undefined) {
             socket.emit('update_room', { currentRoom: socket.Room, currentActive: socket.adapter.rooms[socket.Room].length })
         }
     })
 
     socket.on('change_room', (data) => {
-        socket.leave(socket.Room)
-        //Leave room
+        //Leave current room if you're in a room
+        if(typeof socket.Room != 'undefined' && socket.Room){
+            socket.leave(socket.Room)
+            let newEvent = new Event({ username: socket.username, event: "Leave room", source: socket.Room })
+            newEvent.save()
+            .then(() => console.log("New leaving event added"))
+            .catch((err) => console.log(err.message))
+        }
+        // Change room
         socket.Room = data.destinationRoom
+        let newEvent = new Event({ username: socket.username, event: "Join room", source: socket.Room })
+        newEvent.save()
+        .then(() => console.log("New joining event added"))
+        .catch((err) => console.log(err.message)) 
         socket.join(data.destinationRoom)
-
-        //Change room's user list and update user's room (done)
-        User.findOne({ user_socket_id: socket.id }).exec((err, user) => {
-            if (err) {
-                console.log(err.message)
-            } else {
-                Room.findOneAndUpdate({ roomName: socket.Room }, { "$push": { "users": user._id } }).exec((err, room) => {
-                    if (err) {
-                        console.log(err.message)
-                    } else {
-                        user.currentRoomId = room._id
-                        user.save()
-                        console.log('Updated user list')
-                    }
-                })
-            }
-        })
-
+      
         if (socket.adapter.rooms[socket.Room] !== undefined) {
             socket.emit('update_room', { currentRoom: socket.Room, currentActive: socket.adapter.rooms[socket.Room].length })
             socket.broadcast.in(socket.Room).emit('update_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
@@ -141,7 +129,13 @@ io.on('connection', (socket) => {
 
     //New message
     socket.on('new_message', (data) => {
-        socket.broadcast.in(socket.Room).emit('new_message', { message: data.message, username: socket.username })
+        if(typeof socket.Room != 'undefined' && socket.Room){
+            socket.broadcast.in(socket.Room).emit('new_message', { message: data.message, username: socket.username })
+            let newMessage = new Message({ senderUsername: socket.username, message: data.message, roomName: socket.Room })
+            newMessage.save()
+            .then(() => console.log(`New message sent in ${socket.Room} room`))
+            .catch((err) => console.log(err.message))
+        }
     })
 
     //Inform others that someone is typing
@@ -149,3 +143,5 @@ io.on('connection', (socket) => {
         socket.broadcast.in(socket.Room).emit('typing', { username: socket.username })
     })
 })
+
+
