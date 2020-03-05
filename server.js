@@ -26,6 +26,13 @@ app.get('/', (req, res) => {
     })
 })
 
+app.get('/api/eventlog', (req, res) => {
+    Event.find({}).exec((err, events) =>{
+        if(err) res.send('Something went wrong!!!')
+        res.json(events)
+    })
+})
+
 app.get('/api/history', (req, res) => {
     Message.find({}).exec((err, messages) => {
         if(err) res.send('Something went wrong!!!')
@@ -64,6 +71,9 @@ io.on('connection', (socket) => {
         //Leave current room if you're in a room
         if(typeof socket.Room != 'undefined' && socket.Room){
             socket.leave(socket.Room)
+            if (socket.adapter.rooms[socket.Room] !== undefined) {
+                socket.broadcast.in(socket.Room).emit('update_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
+            }
             let newEvent = new Event({ username: socket.username, event: "Leave room", source: socket.Room })
             newEvent.save()
             .then(() => console.log("New leaving event added"))
@@ -71,6 +81,7 @@ io.on('connection', (socket) => {
         }
 
         socket.Room = data.new_room
+        socket.join(socket.Room)
 
         // Add new room to the database
         let newRoom = new Room({ roomName: data.new_room })
@@ -91,14 +102,15 @@ io.on('connection', (socket) => {
             if(err.code === 11000) {
                 console.log('Duplicate name, moving to existing room!!!')
                 socket.emit('update_current_room', {new_room: data.new_room})
+                socket.broadcast.in(socket.Room).emit('update_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
                 let newEvent = new Event({ username: socket.username, event: "Join room", source: socket.Room })
                 newEvent.save()
                 .then(() => console.log("New joining event added"))
                 .catch((err) => console.log(err.message))
+            }else{
+                console.log(err.message)
             }
-            console.log(err.message)
         })
-        socket.join(socket.Room)
         if (socket.adapter.rooms[socket.Room] !== undefined) {
             socket.emit('update_room', { currentRoom: socket.Room, currentActive: socket.adapter.rooms[socket.Room].length })
         }
@@ -108,6 +120,9 @@ io.on('connection', (socket) => {
         //Leave current room if you're in a room
         if(typeof socket.Room != 'undefined' && socket.Room){
             socket.leave(socket.Room)
+            if (socket.adapter.rooms[socket.Room] !== undefined) {
+                socket.broadcast.in(socket.Room).emit('update_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
+            }
             let newEvent = new Event({ username: socket.username, event: "Leave room", source: socket.Room })
             newEvent.save()
             .then(() => console.log("New leaving event added"))
