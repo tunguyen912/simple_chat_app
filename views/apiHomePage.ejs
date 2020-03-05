@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Page</title>
+</head>
+<body>
+    <form action="api/eventlog" method = "get">
+        <button>Event Log History</button>
+    </form>
+
+    <form action="api/history" method = "get">
+        <button>Message Log History</button>
+    </form>
+
+    <form action="api/roomhistory/" method = "post">
+        <label>Choose a room:</label>
+        <select>
+            <% for(var i=0; i < data.length; i++) { %>
+                <option value= "<%= data[i].roomName %>" ><%= data[i].roomName %></option>
+            <% } %>
+        </select>
+        <input type="submit" value="Submit Room Name">
+    </form>
+</body>
+</html>

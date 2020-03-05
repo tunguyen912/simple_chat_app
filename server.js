@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
+const apiRoute = require('./routes/route')
+// const bodyParser = require('body-parser')
 
 //Models
 const { Message, Event, Room } = require('./models/model')
@@ -25,20 +26,7 @@ app.get('/', (req, res) => {
         res.render('index', { rooms })
     })
 })
-
-app.get('/api/eventlog', (req, res) => {
-    Event.find({}).exec((err, events) =>{
-        if(err) res.send('Something went wrong!!!')
-        res.json(events)
-    })
-})
-
-app.get('/api/history', (req, res) => {
-    Message.find({}).exec((err, messages) => {
-        if(err) res.send('Something went wrong!!!')
-        res.json(messages)
-    })
-})
+app.use('/api', apiRoute)
 
 server = app.listen(3000);
 
