@@ -76,4 +76,9 @@ $(function(){
     socket.on('typing', (data) => {
         feedback.html("<p><i>" + data.username +" is typing a message...." + "</i></p>")
     })
+
+    //Load old messages
+    socket.on('load_old_message', (data) =>{
+        chatroom.append(`<p class = 'message'> ${data.sender}: ${data.message}</p>`)
+    })
 })

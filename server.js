@@ -103,6 +103,7 @@ io.on('connection', (socket) => {
                 console.log('Duplicate name, moving to existing room!!!')
                 socket.emit('update_current_room', {new_room: data.new_room})
                 socket.broadcast.in(socket.Room).emit('update_participant', { currentActive: socket.adapter.rooms[socket.Room].length })
+                
                 let newEvent = new Event({ username: socket.username, event: "Join room", source: socket.Room })
                 newEvent.save()
                 .then(() => console.log("New joining event added"))
@@ -111,6 +112,18 @@ io.on('connection', (socket) => {
                 console.log(err.message)
             }
         })
+        
+        Message.find({ roomName: socket.Room })
+        .then((messages) => {
+            if(messages.length > 0){
+                messages.map((mes) => {
+                    socket.emit('load_old_message', {sender: mes.senderUsername, message: mes.message})
+                })
+            }
+        })
+        .catch((err) => console.log(err.message))
+
+        
         if (socket.adapter.rooms[socket.Room] !== undefined) {
             socket.emit('update_room', { currentRoom: socket.Room, currentActive: socket.adapter.rooms[socket.Room].length })
         }
@@ -134,7 +147,17 @@ io.on('connection', (socket) => {
         newEvent.save()
         .then(() => console.log("New joining event added"))
         .catch((err) => console.log(err.message)) 
-        socket.join(data.destinationRoom)
+        socket.join(socket.Room)
+
+        Message.find({ roomName: socket.Room })
+        .then((messages) => {
+            if(messages.length > 0){
+                messages.map((mes) => {
+                    socket.emit('load_old_message', {sender: mes.senderUsername, message: mes.message})
+                })
+            }
+        })
+        .catch((err) => console.log(err.message))
       
         if (socket.adapter.rooms[socket.Room] !== undefined) {
             socket.emit('update_room', { currentRoom: socket.Room, currentActive: socket.adapter.rooms[socket.Room].length })
