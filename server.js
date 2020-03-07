@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const apiRoute = require('./routes/route')
-// const bodyParser = require('body-parser')
 
 //Models
 const { Message, Event, Room } = require('./models/model')
@@ -18,6 +17,7 @@ app.set('view engine', 'ejs')
 app.set('views', './views');
 app.use(express.static('public'))
 
+app.use('/api', apiRoute)
 app.get('/', (req, res) => {
     Room.find({}).select('roomName').exec((err, rooms) => {
         if(err) {
@@ -26,7 +26,6 @@ app.get('/', (req, res) => {
         res.render('index', { rooms })
     })
 })
-app.use('/api', apiRoute)
 
 server = app.listen(3000);
 
