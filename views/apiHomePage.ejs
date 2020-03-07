@@ -5,38 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Page</title>
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td,
-        th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
 </head>
 
 <body>
-    <form action="/api/eventlog" method="POST">
+    <form action="/api/eventlog" method="GET">
         <button type="submit">Event Log History</button>
     </form>
 
-    <form action="/api/history" method="POST">
+    <form action="/api/history" method="GET">
         <button>Message Log History</button>
     </form>
 
     <% for(var i = 0 ; i< data.length;i++){ %>
     <form method="post" action="api/roomhistory/<%=data[i].roomName %>">
-        <button type="submit"> <%=data[i].roomName %></button>
+        <input type="submit"> <%=data[i].roomName %></input>
     </form>
     <%}%>
 
