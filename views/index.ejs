@@ -3,6 +3,9 @@
 
 <head>
     <meta http-equiv="Content-Type" const="text/html;charset=UTF-8" />
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/sprinkle.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <!-- Export socket.io on client side -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script> -->
@@ -33,7 +36,7 @@
                 <select id="rooms">
                     <option selected="true" disabled="disabled">--Please choose a room--</option>
                     <% rooms.map((room) => { %>
-                        <option id="<%= room.roomName %>Room" value="<%= room.roomName %>"><%= room.roomName %></option>
+                    <option id="<%= room.roomName %>Room" value="<%= room.roomName %>"><%= room.roomName %></option>
                     <% }) %>
 
                 </select>
