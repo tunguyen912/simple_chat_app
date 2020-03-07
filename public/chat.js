@@ -1,4 +1,4 @@
-$(function(){
+
     var socket = io.connect('https://mernsocketio.herokuapp.com' || "http://localhost:3000/")
     var message = $("#message")
     var send_message = $("#send_message")
@@ -81,4 +81,3 @@ $(function(){
     socket.on('load_old_message', (data) =>{
         chatroom.append(`<p class = 'message'> ${data.sender}: ${data.message}</p>`)
     })
-})
