@@ -15,8 +15,7 @@ mongoose.connect('mongodb+srv://tunguyen:Anhtu129@cluster0-nttfq.mongodb.net/tes
 
 app.set('view engine', 'ejs')
 app.set('views', './views');
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json())
+
 app.use(express.static('public'))
 
 app.use('/api', apiRoute)
