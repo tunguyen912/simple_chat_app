@@ -5,22 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Page</title>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="/api/eventlog" method="GET">
-        <button type="submit">Event Log History</button>
-    </form>
+    <table>
+        <tr>
+            <td>
+                <label>View Event Log History: </label>
+            </td>
+            <td>
+                <form action="/api/eventlog" method="GET">
+                    <button type="submit">Event Log History</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>View Message History: </label>
+            </td>
+            <td>
+                <form action="/api/history" method="GET">
+                    <button>Message History</button>
+                </form>
+            </td>
+        </tr>
+        
 
-    <form action="/api/history" method="GET">
-        <button>Message Log History</button>
-    </form>
 
-    <% for(var i = 0 ; i< data.length;i++){ %>
-    <form method="post" action="api/roomhistory/<%=data[i].roomName %>">
-        <input type="submit"> <%=data[i].roomName %></input>
-    </form>
-    <%}%>
+        <% for(var i = 0 ; i< data.length;i++){ %>
+            <tr>
+                <td>
+                    <label>View Message History of <%=data[i].roomName %> room: </label>
+                </td>
+                <td>
+                    <form method="post" action="api/roomhistory/<%=data[i].roomName %>">
+                        <button type="submit"> <%=data[i].roomName %></button>
+                    </form>
+                </td>
+            </tr>
+        <%}%>
+    </table>
+>>>>>>> 4540015fbf7a3efa7a8bb90026b2007e7ab4f5d5
 
 </body>
 

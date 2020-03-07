@@ -35,8 +35,8 @@
                 <h2>Join Room:</h2>
                 <select id="rooms">
                     <option selected="true" disabled="disabled">--Please choose a room--</option>
-                    <% rooms.forEach((room) => { %>
-                    <option id="<%= room.roomName %>Room" value="<%= room.roomName %>"><%= room.roomName %></option>
+                    <% rooms.map((room) => { %>
+                        <option id="<%= room.roomName %>Room" value="<%= room.roomName %>"><%= room.roomName %></option>
                     <% }) %>
 
                 </select>

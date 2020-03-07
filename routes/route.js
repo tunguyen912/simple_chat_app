@@ -10,7 +10,6 @@ router.get('/', (req, res) =>{
     })
 })
 
-
 router.get('/eventlog', (req, res) => {
     Event.find({}).exec((err, events) =>{
         if(err) res.send('Something went wrong!!!')
@@ -26,7 +25,6 @@ router.get('/history', (req, res) => {
 
 
 router.post('/roomhistory/:roomname', (req, res) =>{
-    console.log("This is the requested room name : " + JSON.stringify(req.params))
     Message.find({roomName: req.params.roomname}).exec((err, messages) => {
         if(err) res.send('Something went wrong!!!')
         res.render('messageHistory', { data: messages })
