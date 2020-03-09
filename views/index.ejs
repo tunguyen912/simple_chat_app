@@ -1,15 +1,11 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" const="text/html;charset=UTF-8" />
-    <link href="http://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles.css">
-
     <!-- Export socket.io on client side -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-
-   
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://mernsocketio.herokuapp.com/socket.io/socket.io.js"></script>
     <title>Simple Chat App</title>
 </head>
 
@@ -36,7 +32,7 @@
                 <select id="rooms">
                     <option selected="true" disabled="disabled">--Please choose a room--</option>
                     <% rooms.map((room) => { %>
-                        <option id="<%= room.roomName %>Room" value="<%= room.roomName %>"><%= room.roomName %></option>
+                    <option id="<%= room.roomName %>Room" value="<%= room.roomName %>"><%= room.roomName %></option>
                     <% }) %>
 
                 </select>

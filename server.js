@@ -15,6 +15,7 @@ mongoose.connect('mongodb+srv://tunguyen:Anhtu129@cluster0-nttfq.mongodb.net/tes
 
 app.set('view engine', 'ejs')
 app.set('views', './views');
+
 app.use(express.static('public'))
 
 app.use('/api', apiRoute)
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
     })
 })
 
-server = app.listen(3000);
+server = app.listen(process.env.PORT || 3000);
 
 const io = require('socket.io')(server)
 io.on('connection', (socket) => {
