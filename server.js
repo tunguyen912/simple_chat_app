@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
@@ -7,7 +8,7 @@ const apiRoute = require('./routes/route')
 const { Message, Event, Room } = require('./models/model')
 
 
-mongoose.connect('mongodb+srv://tunguyen:Anhtu129@cluster0-nttfq.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-nttfq.mongodb.net/test?retryWrites=true&w=majority`,
  { useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
