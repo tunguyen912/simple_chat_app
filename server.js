@@ -6,6 +6,8 @@ const apiRoute = require('./routes/route')
 const registerRoute = require('./routes/register')
 const loginRoute = require('./routes/login')
 const bodyParser = require('body-parser')
+const {verifyUser} = require('./public/verifyToken')
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -36,7 +38,7 @@ app.get('/', (req, res) =>{
     res.render('index')
 })
 
-app.get('/chatPage', (req, res) => {
+app.get('/chatPage', verifyUser, (req, res) => {
     Room.find({}).select('roomName').exec((err, rooms) => {
         if(err) {
             res.send('Something went wrong!!!')

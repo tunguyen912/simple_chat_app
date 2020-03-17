@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const { Message, Event, Room } = require('../models/model')
-const verify = require('../public/verifyToken')
+const { verifyAdmin } = require('../public/verifyToken')
 
 
-router.get('/', verify, (req, res) =>{
+router.get('/', verifyAdmin, (req, res) =>{
     Room.find({}).exec((err, rooms) =>{
         if(err) res.send('Something went wrong!!!!!')
         res.render('../views/apiHomePage', {data: rooms})

@@ -1,11 +1,25 @@
 const router = require('express').Router()
-const {User} = require('../models/model')
+const {User, Admin} = require('../models/model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const http = require('http');
+const ls = require('local-storage')
 
+router.post('/login/admin', async (req, res) =>{
+    //Check the email
+    admin = await Admin.findOne({admin: req.body.username})
+    if(!admin) res.send(`Email or Password is wrong`)
 
-router.post('/login', async (req, res) =>{
+    //Check the password
+    const validPass = await bcrypt.compare(req.body.password, admin.password)
+    if(!validPass) res.send(`Password is wrong`)
+
+    //Create and assign a token
+    const token = jwt.sign({ _id: admin._id}, process.env.TOKEN_SECRET_ADMIN, { expiresIn: "1h" })
+    ls.set('auth-token', token)
+    res.redirect('/api')
+})
+
+router.post('/login/user', async (req, res) =>{
     //Check the email
     user = await User.findOne({username: req.body.username})
     if(!user) res.send(`Email or Password is wrong`)
@@ -15,10 +29,9 @@ router.post('/login', async (req, res) =>{
     if(!validPass) res.send(`Password is wrong`)
 
     //Create and assign a token
-    const token = jwt.sign({ _id: user._id}, process.env.TOKEN_SECRET, { expiresIn: "1h" })
-    res.header('auth-token', token).send({token: token})
-    
-    res.redirect('/api')
+    const token = jwt.sign({ _id: user._id}, process.env.TOKEN_SECRET_USER, { expiresIn: "1h" })
+    ls.set('auth-token', token)
+    res.redirect('/chatPage')
 })
 
 module.exports = router;
