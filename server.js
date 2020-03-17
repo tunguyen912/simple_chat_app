@@ -3,12 +3,17 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const apiRoute = require('./routes/route')
+const registerRoute = require('./routes/register')
+const loginRoute = require('./routes/login')
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Models
 const { Message, Event, Room } = require('./models/model')
 
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-nttfq.mongodb.net/test?retryWrites=true&w=majority`,
+mongoose.connect(process.env.DB_CONNECT,
  { useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -18,14 +23,25 @@ app.set('view engine', 'ejs')
 app.set('views', './views');
 
 app.use(express.static('public'))
+app.use(express.json())
 
+//Routes
 app.use('/api', apiRoute)
-app.get('/', (req, res) => {
+app.use('/', registerRoute)
+app.use('/', loginRoute)
+
+
+
+app.get('/', (req, res) =>{
+    res.render('index')
+})
+
+app.get('/chatPage', (req, res) => {
     Room.find({}).select('roomName').exec((err, rooms) => {
         if(err) {
             res.send('Something went wrong!!!')
         }
-        res.render('index', { rooms })
+        res.render('chatPage', { rooms })
     })
 })
 

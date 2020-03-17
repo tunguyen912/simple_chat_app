@@ -1,6 +1,17 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const userSchema = new Schema({
+    username: { type: String, unique: true, required: true},
+    password: {type: String, required: true},
+    timeCreated: { type: Date, default: Date.now }
+})
+
+const adminSchema = new Schema({
+    admin: { type: String, unique: true, required: true},
+    password: {type: String, required: true},
+    timeCreated: { type: Date, default: Date.now }
+})
 
 const eventSchema = new Schema({
     username: {type: String, required: true},
@@ -25,5 +36,9 @@ const messageSchema = new Schema({
 const Message = mongoose.model('Message', messageSchema)
 const Event = mongoose.model('Event', eventSchema)
 const Room = mongoose.model('Room', roomSchema)
+const User = mongoose.model('User', userSchema)
+const Admin = mongoose.model('Admin', adminSchema)
 
-module.exports = { Message, Event, Room }
+
+
+module.exports = { Message, Event, Room, User, Admin }
