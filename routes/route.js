@@ -11,13 +11,13 @@ router.get('/', verifyAdmin, (req, res) =>{
     })
 })
 
-router.get('/eventlog', (req, res) => {
+router.get('/eventlog', verifyAdmin, (req, res) => {
     Event.find({}).exec((err, events) =>{
         if(err) res.send('Something went wrong!!!')
         res.render('eventLogs', { data: events })
     })
 })
-router.get('/history', (req, res) => {
+router.get('/history', verifyAdmin, (req, res) => {
     Message.find({}).exec((err, messages) => {
         if(err) res.send('Something went wrong!!!')
         res.render('messageHistory', { data: messages })
