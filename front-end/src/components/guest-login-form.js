@@ -38,7 +38,8 @@ export default function SignIn() {
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           {/* <LockOutlinedIcon /> */}
-          <LoginIcon />
+          <img src={LoginIcon}></img>
+          
             {/* loi icon */}
 
         </Avatar>
