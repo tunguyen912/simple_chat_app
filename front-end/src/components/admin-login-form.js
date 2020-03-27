@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import LoginIcon from '../assets/login.svg'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%',
@@ -37,9 +35,7 @@ export default function SignIn() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          {/* <LockOutlinedIcon /> */}
-          <img src={LoginIcon}></img>
-          {/* loi icon */}
+          <img src={LoginIcon} alt='icon'></img>
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in as Administrator
@@ -73,8 +69,19 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            href="/EventHistory"
           >
             Sign In as Administrator
+          </Button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="secondary"
+            className={classes.submit}
+            href="/"
+          >
+            Cancel
           </Button>
         </form>
       </div>
