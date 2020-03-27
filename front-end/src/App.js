@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import AdminLogin from './components/admin-login-form'
+import AdminLogin from './components/admin/admin-login-form'
 import GuestLogin from './components/guest-login-form'
 import Welcome from './components/welcome'
-import EventHistory from './components/eventHistory'
-import ChatHistory from './components/chatHistory'
-import RoomHistory from './components/roomHistory'
+import EventHistory from './components/admin/eventHistory'
+import ChatHistory from './components/admin/chatHistory'
+import RoomHistory from './components/admin/roomHistory'
 
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 

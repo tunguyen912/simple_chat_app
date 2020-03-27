@@ -1,6 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
+import { UseStyles } from './UseStyles'
+
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -20,67 +22,10 @@ import Button from '@material-ui/core/Button'
 import { NavLink } from 'react-router-dom';
 
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));
-
-export default function PersistentDrawerLeft() {
-  const classes = useStyles();
+export default function PersistentDrawerLeft(props) {
+    
+  const { title } = props
+  const classes = UseStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -92,21 +37,21 @@ export default function PersistentDrawerLeft() {
     setOpen(false);
   };
 
-  const drawerContent = (
-    <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div className={classes.drawerHeader} />
-        <Typography paragraph>
-          This is a header
-        </Typography>
-        <Typography paragraph>
-          This is Chat History
-        </Typography>
-      </main>
-  )
+//   const drawerContent = (
+//     <main
+//         className={clsx(classes.content, {
+//           [classes.contentShift]: open,
+//         })}
+//       >
+//         <div className={classes.drawerHeader} />
+//         <Typography paragraph>
+//           This is a header
+//         </Typography>
+//         <Typography paragraph>
+//           This is Chat History
+//         </Typography>
+//       </main>
+//   )
 
   return (
     <div className={classes.root}>
@@ -128,7 +73,8 @@ export default function PersistentDrawerLeft() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap style={{ flex: 1 }}>
-            History
+            {title}
+            {/* using props title */}
           </Typography>
           <Button
             type="submit"
@@ -163,7 +109,7 @@ export default function PersistentDrawerLeft() {
         </List>
         <Divider /> 
       </Drawer>
-      {drawerContent}      
+      {/* {drawerContent}       */}
     </div>
   );
 }
