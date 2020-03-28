@@ -1,9 +1,30 @@
 import React from 'react'
-import { UseStyles } from './UseStyles'
-// import Typography from '@material-ui/core/Typography'
-import Toolbar from './admin-toolbar'
-import clsx from 'clsx';
 import {CustomTable} from './table'
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from './admin-toolbar'
+
+const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+}));
 
 export default function EventsReport() {
   const array = [{_id: 1, test1: '1111', test2:"bbbb", test3: "cccc", test4: "dddd"},
@@ -19,20 +40,13 @@ export default function EventsReport() {
                 ]
                  
 
-  const classes = UseStyles();
-  const [open] = React.useState(false);
+  const classes = useStyles();
   return (
-    
         <div className={classes.root}>
           <Toolbar title="Chat History" />
-          <main
-            className={clsx(classes.content, {
-            [classes.contentShift]: open,
-            })}
-          >
+          <main className={classes.content}>
+            <CustomTable objectArray={array} />
           </main>
-          {/* <Typography> Testing </Typography> */}
-          <CustomTable objectArray={array} />
         </div>
     )
 }
