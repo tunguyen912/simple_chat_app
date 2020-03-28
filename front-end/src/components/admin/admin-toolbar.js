@@ -25,33 +25,21 @@ import { NavLink } from 'react-router-dom';
 export default function PersistentDrawerLeft(props) {
     
   const { title } = props
-  const classes = UseStyles();
   const theme = useTheme();
+  const classes = UseStyles(theme);
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    console.log('Testing open')
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    console.log('Testing close')
   };
 
-//   const drawerContent = (
-//     <main
-//         className={clsx(classes.content, {
-//           [classes.contentShift]: open,
-//         })}
-//       >
-//         <div className={classes.drawerHeader} />
-//         <Typography paragraph>
-//           This is a header
-//         </Typography>
-//         <Typography paragraph>
-//           This is Chat History
-//         </Typography>
-//       </main>
-//   )
+  
 
   return (
     <div className={classes.root}>
@@ -74,7 +62,6 @@ export default function PersistentDrawerLeft(props) {
           </IconButton>
           <Typography variant="h6" noWrap style={{ flex: 1 }}>
             {title}
-            {/* using props title */}
           </Typography>
           <Button
             type="submit"

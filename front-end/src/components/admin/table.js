@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -6,7 +6,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination'
 
 
 const StyledTableCell = withStyles(theme => ({
@@ -43,21 +42,9 @@ const useStyles = makeStyles(theme => ({
     },
   }));
   
-export const RecordTable=(props)  => {
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [page, setPage] = useState(0)
+export const CustomTable=(props)  => {
     const { objectArray } = props
     const classes = useStyles();
-
-
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = event => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPage(0);
-    };
 
     const renderTableData  = () => {
       return objectArray.map((obj, index) => {
@@ -94,14 +81,6 @@ export const RecordTable=(props)  => {
               {renderTableData()}
           </TableBody>
         </Table>
-        <TablePagination
-          rowsPerPageOptions={[1,5, 10, 25]}
-          count={objectArray.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
         </TableContainer>
       </React.Fragment>
     );
