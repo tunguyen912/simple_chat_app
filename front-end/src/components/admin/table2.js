@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -42,15 +44,25 @@ const useStyles = makeStyles(theme => ({
     },
   }));
   
-export const CustomTable=(props)  => {
+export const EditableTable=(props)  => {
     const { objectArray } = props
+    var array = objectArray
     const classes = useStyles();
 
+    const handleDelete = (index) => {
+        array = array.filter((row, i) => i !== index)
+        console.log(array)
+    }
+
     const renderTableData  = () => {
-      return objectArray.map((obj, index) => {
+      return array.map((obj, index) => {
         let col = Object.keys(obj)
         return (
            <StyledTableRow key={obj._id}>
+               <TableCell>
+                    <EditIcon onClick={()=> console.log('bbbbb')}/>
+                    <DeleteIcon onClick={()=> handleDelete(index)}/>
+               </TableCell>
               {col.map((val, index) => {
                  return <TableCell key={index}>
                         {obj[col[index]]}
@@ -62,7 +74,7 @@ export const CustomTable=(props)  => {
     }
 
     const renderTableHeader = ()  => {
-      let header = Object.keys(objectArray[0])
+      let header = Object.keys(array[0])
       return header.map((key, index) => {
          return <StyledTableCell key={index}>{key.toUpperCase()}</StyledTableCell>
       })
@@ -75,10 +87,13 @@ export const CustomTable=(props)  => {
         <TableContainer>
         <Table className={classes.table} size="small">
           <TableHead className={classes.head}>
-          <TableRow>{renderTableHeader()}</TableRow>
+          <TableRow>
+              <StyledTableCell>Actions</StyledTableCell>
+              {renderTableHeader()}
+          </TableRow>
           </TableHead>
-          <TableBody>
-              {renderTableData()}
+          <TableBody>    
+            {renderTableData()}
           </TableBody>
         </Table>
         </TableContainer>

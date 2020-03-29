@@ -1,5 +1,5 @@
 import React from 'react'
-import {CustomTable} from './table'
+import {EditableTable} from './table2'
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from './admin-toolbar'
 
@@ -45,7 +45,7 @@ export default function EventsReport() {
         <div className={classes.root}>
           <Toolbar title="Room History" />
           <main className={classes.content}>
-            <CustomTable objectArray={array} />
+            <EditableTable objectArray={array} />
           </main>
         </div>
     )
