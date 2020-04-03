@@ -1,45 +1,68 @@
-import React from 'react'
-import {CustomTable} from './table'
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from './admin-toolbar'
-
-const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));
-
+import React from "react";
+import Toolbar from "./admin-toolbar";
+import { makeStyles } from "@material-ui/core/styles";
+import MaterialTable from "material-table";
+import TableContainer from "@material-ui/core/TableContainer";
 export default function EventsReport() {
-  const array = [{_id: 1, test1: '1111', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 2, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 3, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"}
-                ]
-                 
+  const [state, setState] = React.useState({
+    //EVENT DATA
+    columns: [
+      { title: "Username", field: "username" },
+      { title: "Event", field: "event" },
+      { title: "Source", field: "source" },
+      { title: "Time Stamp ", field: "timestamp" }
+    ],
 
+    data: [
+      {
+        username: "Mehmet",
+        event: "Connected	",
+        source: "Game Room	",
+        timestamp:
+          "Mon Mar 09 2020 12:34:56 GMT+0000 (Coordinated Universal Time)"
+      },
+      {
+        username: "Zerya Betül",
+        event: "Disconnected",
+        source: "Game Room	",
+        timestamp:
+          "Mon Mar 09 2020 12:34:56 GMT+0000 (Coordinated Universal Time)"
+      }
+    ]
+  });
+  const useStyles = makeStyles(theme => ({
+    table: {
+      marginTop: "5rem",
+      margin: "auto",
+      width: "90%",
+      marginBottom: "5rem"
+    }
+  }));
   const classes = useStyles();
   return (
-        <div className={classes.root}>
-          <Toolbar title="Event History" />
-          <main className={classes.content}>
-            <CustomTable objectArray={array} />
-          </main>
-        </div>
-    )
+    <React.Fragment>
+      <div>
+        <Toolbar title="Event History" />
+      </div>
+      <TableContainer className={classes.table}>
+        <MaterialTable
+          columns={state.columns}
+          data={state.data}
+          editable={{
+            onRowDelete: oldData =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  setState(prevState => {
+                    const data = [...prevState.data];
+                    data.splice(data.indexOf(oldData), 1);
+                    return { ...prevState, data };
+                  });
+                }, 600);
+              })
+          }}
+        />
+      </TableContainer>
+    </React.Fragment>
+  );
 }

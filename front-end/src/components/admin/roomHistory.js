@@ -1,52 +1,78 @@
-import React from 'react'
-import {EditableTable} from './table2'
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from './admin-toolbar'
-
-const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));
-
+import React from "react";
+import Toolbar from "./admin-toolbar";
+import { makeStyles } from "@material-ui/core/styles";
+import MaterialTable from "material-table";
+import TableContainer from "@material-ui/core/TableContainer";
 export default function EventsReport() {
-  const array = [{_id: 1, test1: '1111', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 2, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 3, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 4, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 5, test1: '1111', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 6, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 7, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 8, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 9, test1: '1111', test2:"bbbb", test3: "cccc", test4: "dddd"},
-                 {_id: 10, test1: 'aaaa', test2:"bbbb", test3: "cccc", test4: "dddd"}
-                ]
-                 
+  const [state, setState] = React.useState({
+    columns: [
+      { title: "Room", field: "room" },
+      { title: "Status", field: "status" },
+      { title: "Created", field: "created_time" },
+      { title: "Current chatter", field: "num_chatter" }
+    ],
 
+    data: [
+      {
+        room: "Mehmet",
+        status: "Active",
+        created_time: "Mar 12 2020",
+        num_chatter: 4
+      },
+      {
+        room: "Mehmet",
+        status: "Active",
+        created_time: "Mar 24 2020",
+        num_chatter: 3
+      }
+    ]
+  });
+  const useStyles = makeStyles(theme => ({
+    table: {
+      marginTop: "5rem",
+      margin: "auto",
+      width: "90%",
+      marginBottom: "5rem"
+    }
+  }));
   const classes = useStyles();
   return (
-        <div className={classes.root}>
-          <Toolbar title="Room History" />
-          <main className={classes.content}>
-            <EditableTable objectArray={array} />
-          </main>
-        </div>
-    )
+    <React.Fragment>
+      <div>
+        <Toolbar title="Room History" />
+      </div>
+      <TableContainer className={classes.table}>
+        <MaterialTable
+          columns={state.columns}
+          data={state.data}
+          editable={{
+            onRowUpdate: (newData, oldData) =>
+            new Promise((resolve) => {
+              setTimeout(() => {
+                resolve();
+                if (oldData) {
+                  setState((prevState) => {
+                    const data = [...prevState.data];
+                    data[data.indexOf(oldData)] = newData;
+                    return { ...prevState, data };
+                  });
+                }
+              }, 600);
+            }),
+            onRowDelete: oldData =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  setState(prevState => {
+                    const data = [...prevState.data];
+                    data.splice(data.indexOf(oldData), 1);
+                    return { ...prevState, data };
+                  });
+                }, 600);
+              })
+          }}
+        />
+      </TableContainer>
+    </React.Fragment>
+  );
 }

@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+
 }));
 
 export default function PersistentDrawerLeft(props) {
@@ -125,7 +126,7 @@ export default function PersistentDrawerLeft(props) {
         <List>
           {['EventHistory', 'ChatHistory', 'Rooms'].map((text, index) => (
             <ListItem button key={text} component={NavLink} to={text}>
-              <ListItemText primary={text} />
+              <ListItemText primary={text}/>
             </ListItem>
           ))}
         </List>

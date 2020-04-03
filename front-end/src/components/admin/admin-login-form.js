@@ -1,30 +1,30 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import LoginIcon from '../../assets/login.svg'
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import LoginIcon from "../../assets/login.svg";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   avatar: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
+    width: "100%",
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 }));
 
 export default function SignIn() {
@@ -35,12 +35,12 @@ export default function SignIn() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <img src={LoginIcon} alt='icon'></img>
+          <img src={LoginIcon} alt="icon"></img>
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in as Administrator
         </Typography>
-        <form className={classes.form} method='POST'    >
+        <form className={classes.form} method="POST">
           <TextField
             variant="outlined"
             margin="normal"
