@@ -8,7 +8,7 @@ export default function EventsReport() {
     //EVENT DATA
     columns: [
       { title: "Username", field: "username" },
-      { title: "Messge", field: "message" },
+      { title: "Message", field: "message" },
       { title: "Room", field: "room" },
       { title: "Time Stamp ", field: "timestamp" }
     ],
