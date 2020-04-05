@@ -124,15 +124,14 @@ export default function PersistentDrawerLeft(props) {
         </div>
         <Divider />
         <List>
-          {['EventHistory', 'ChatHistory', 'Rooms'].map((text, index) => (
-            <ListItem button key={text} component={NavLink} to={text}>
+          {['Event History', 'Chat History', 'Rooms'].map((text, index) => (
+            <ListItem button key={text} component={NavLink} to={"/admin/" + text.split(' ').join('')}>
               <ListItemText primary={text}/>
             </ListItem>
           ))}
         </List>
         <Divider /> 
       </Drawer>
-      {/* {drawerContent}       */}
     </div>
   );
 }

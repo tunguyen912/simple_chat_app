@@ -11,7 +11,7 @@ class RoomList extends Component {
         return ( 
             <div>
                 <Typography variant="h5"> Room List</Typography>
-                <FormControl >
+                <FormControl  style={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-label" >Join Room:</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"

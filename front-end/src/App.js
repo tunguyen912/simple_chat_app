@@ -24,13 +24,13 @@ function App() {
         <Route exact path="/login/guest">
           <GuestLogin />
         </Route>
-        <Route exact path="/EventHistory">
+        <Route exact path="/admin/EventHistory">
           <EventHistory />
         </Route>
-        <Route exact path="/ChatHistory">
+        <Route exact path="/admin/ChatHistory">
           <ChatHistory />
         </Route>
-        <Route exact path="/Rooms">
+        <Route exact path="/admin/Rooms">
           <RoomHistory />
         </Route>
         <Route exact path="/ChatRoom">

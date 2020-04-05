@@ -32,7 +32,7 @@ class MessageList extends Component {
           {this.messages.map(message => {
               let mess = message.sender+ ': '+ message.text
             return (
-                <div key={message.id} className="message-list-container">
+                <div key={message.id} className="message-list-container"  style={{marginTop: 10}}>
                     <Typography
                       className="subtitle1"
                       key="message"
