@@ -12,7 +12,6 @@ export default function RoomReport() {
     { title: "Created", field: "timeCreated" },
   ]);
   const [data, setData] = useState([])
-
   useEffect(() => {
   axios
     .get('http://localhost:3001/api/rooms')
@@ -20,6 +19,7 @@ export default function RoomReport() {
       setData(data)
     })
   }, [])
+  
   const useStyles = makeStyles(theme => ({
     table: {
       marginTop: "5rem",
