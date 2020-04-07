@@ -20,7 +20,7 @@ export default function ChatReport() {
       .then(({data}) => {
         setData(data)
       })
-  })
+  }, [])
 
   const useStyles = makeStyles(theme => ({
     table: {

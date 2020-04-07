@@ -19,7 +19,7 @@ export default function RoomReport() {
     .then(({data}) => {
       setData(data)
     })
-  })
+  }, [])
   const useStyles = makeStyles(theme => ({
     table: {
       marginTop: "5rem",

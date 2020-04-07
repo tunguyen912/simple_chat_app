@@ -12,23 +12,15 @@ export default function EventsReport() {
     { title: "Source", field: "source" },
     { title: "Timestamp ", field: "time" },
   ]);
-  const [data, setData] = useState({
-    data: [
-      { username: "Mehmet", event: "Baran", source: 1987, time: 63 },
-      { username: "Mehmet", event: "Baran", source: 1987, time: 63 },
-      { username: "Mehmet", event: "Baran", source: 1987, time: 63 },
-      { username: "Mehmet", event: "Baran", source: 1987, time: 63 },
+  const [data, setData] = useState([]);
 
-    ],
-  });
-
-  // useEffect(() => {
-  //   axios
-  //     .get('http://localhost:3001/api/eventlog')
-  //     .then(({data}) => {
-  //       setData(data)
-  //     })
-  // })
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/api/eventlog')
+      .then(({data}) => {
+        setData(data)
+      })
+  }, [])
 
   const useStyles = makeStyles((theme) => ({
     table: {
@@ -48,7 +40,7 @@ export default function EventsReport() {
       <TableContainer className={classes.table}>
         <MaterialTable
           columns={columns}
-          data={data.data}
+          data={data}
           //delete is not working
 
           //CAI NAY LA MATERIAL TABLE PACKAGE TREN MANG KET NOI VOI MATERIAL UI
