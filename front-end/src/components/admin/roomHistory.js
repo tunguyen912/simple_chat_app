@@ -1,32 +1,25 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Toolbar from "./admin-toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
-export default function EventsReport() {
-  const [state, setState] = React.useState({
-    columns: [
-      { title: "Room", field: "room" },
-      { title: "Status", field: "status" },
-      { title: "Created", field: "created_time" },
-      { title: "Current chatter", field: "num_chatter" }
-    ],
+import axios from 'axios'
 
-    data: [
-      {
-        room: "Mehmet",
-        status: "Active",
-        created_time: "Mar 12 2020",
-        num_chatter: 4
-      },
-      {
-        room: "Mehmet",
-        status: "Active",
-        created_time: "Mar 24 2020",
-        num_chatter: 3
-      }
-    ]
-  });
+export default function RoomReport() {
+  const [columns] = useState([
+    { title: "Room ID", field: "_id" },
+    { title: "Room Name", field: "roomName" },
+    { title: "Created", field: "timeCreated" },
+  ]);
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+  axios
+    .get('http://localhost:3001/api/rooms')
+    .then(({data}) => {
+      setData(data)
+    })
+  })
   const useStyles = makeStyles(theme => ({
     table: {
       marginTop: "5rem",
@@ -43,15 +36,16 @@ export default function EventsReport() {
       </div>
       <TableContainer className={classes.table}>
         <MaterialTable
-          columns={state.columns}
-          data={state.data}
+          columns={columns}
+          data={data}
+          //Delete and edit is not working
           editable={{
             onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
               setTimeout(() => {
                 resolve();
                 if (oldData) {
-                  setState((prevState) => {
+                  setData((prevState) => {
                     const data = [...prevState.data];
                     data[data.indexOf(oldData)] = newData;
                     return { ...prevState, data };
@@ -63,7 +57,7 @@ export default function EventsReport() {
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  setState(prevState => {
+                  setData(prevState => {
                     const data = [...prevState.data];
                     data.splice(data.indexOf(oldData), 1);
                     return { ...prevState, data };

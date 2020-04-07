@@ -1,35 +1,27 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Toolbar from "./admin-toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
+import axios from 'axios'
+
 export default function EventsReport() {
-  const [state, setState] = React.useState({
-    //EVENT DATA
-    columns: [
+  const [columns] = useState([
       { title: "Username", field: "username" },
       { title: "Event", field: "event" },
       { title: "Source", field: "source" },
-      { title: "Time Stamp ", field: "timestamp" }
-    ],
+      { title: "Timestamp ", field: "time" }
+  ]);
+  const [data, setData] = useState([])
 
-    data: [
-      {
-        username: "Mehmet",
-        event: "Connected	",
-        source: "Game Room	",
-        timestamp:
-          "Mon Mar 09 2020 12:34:56 GMT+0000 (Coordinated Universal Time)"
-      },
-      {
-        username: "Zerya Betül",
-        event: "Disconnected",
-        source: "Game Room	",
-        timestamp:
-          "Mon Mar 09 2020 12:34:56 GMT+0000 (Coordinated Universal Time)"
-      }
-    ]
-  });
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/api/eventlog')
+      .then(({data}) => {
+        setData(data)
+      })
+  })
+
   const useStyles = makeStyles(theme => ({
     table: {
       marginTop: "5rem",
@@ -38,6 +30,8 @@ export default function EventsReport() {
       marginBottom: "5rem"
     }
   }));
+
+
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -46,14 +40,15 @@ export default function EventsReport() {
       </div>
       <TableContainer className={classes.table}>
         <MaterialTable
-          columns={state.columns}
-          data={state.data}
+          columns={columns}
+          data={data}
+          //delete is not working
           editable={{
             onRowDelete: oldData =>
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
-                  setState(prevState => {
+                  setData(prevState => {
                     const data = [...prevState.data];
                     data.splice(data.indexOf(oldData), 1);
                     return { ...prevState, data };

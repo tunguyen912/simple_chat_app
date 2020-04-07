@@ -47,7 +47,7 @@ app.get('/chatPage', verifyUser, (req, res) => {
     })
 })
 
-server = app.listen(process.env.PORT || 3000);
+server = app.listen(process.env.PORT || 3001);
 
 const io = require('socket.io')(server)
 io.on('connection', (socket) => {
