@@ -3,7 +3,7 @@ import Toolbar from "./admin-toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
-import axios from 'axios'
+import axios from 'axios';
 
 export default function ChatReport() {
   const [columns] = useState([
