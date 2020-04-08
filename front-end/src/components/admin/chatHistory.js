@@ -15,12 +15,19 @@ export default function ChatReport() {
   const [data, setData] = useState({chats: []})
   
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/chats')
-      .then(({data}) => {
+    const token = localStorage.getItem('token')
+    const hasToken = token === null ? false : true
+    if(hasToken){
+      axios
+      .get("http://localhost:3001/api/chats")
+      .then(({ data }) => {
         setData({ chats: data });
-      })
-  }, [])
+    })}
+    else{
+      console.log('Unauthorized')
+      //Need to redirect to login page
+    }
+  }, []);
 
   const handleDelete = (id) => {
     axios

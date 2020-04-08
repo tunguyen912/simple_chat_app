@@ -12,13 +12,22 @@ export default function RoomReport() {
     { title: "Created", field: "timeCreated" },
   ]);
   const [data, setData] = useState([{rooms: []}])
+  
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/rooms')
-      .then(({data}) => {
-        setData({rooms: data})
-      })
-  }, [])
+    const token = localStorage.getItem('token')
+    const hasToken = token === null ? false : true
+    if(hasToken){
+      axios
+      .get("http://localhost:3001/api/rooms")
+      .then(({ data }) => {
+        setData({ rooms: data });
+    })}
+    else{
+      //Need to redirect to login page
+      console.log('Unauthorized')
+    }
+  }, []);
+
   const handleDelete = (id) => {
     axios
       .delete(`http://localhost:3001/api/rooms/${id}`)

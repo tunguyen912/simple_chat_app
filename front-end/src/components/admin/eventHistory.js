@@ -5,6 +5,7 @@ import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import axios from "axios";
 
+
 export default function EventsReport() {
   const [columns] = useState([
     { title: "ID", field: "_id" },
@@ -16,11 +17,19 @@ export default function EventsReport() {
   const [data, setData] = useState({ events: [] });
 
   useEffect(() => {
-    axios
+    const token = localStorage.getItem('token')
+    const hasToken = token === null ? false : true
+    if(hasToken){
+      axios
       .get("http://localhost:3001/api/eventlog")
       .then(({ data }) => {
         setData({ events: data });
-    });
+    })}
+    else{
+      //Need to redirect to login page
+
+      console.log('Unauthorized')
+    }
   }, []);
 
   const useStyles = makeStyles((theme) => ({

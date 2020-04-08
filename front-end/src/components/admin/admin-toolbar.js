@@ -76,6 +76,9 @@ export default function PersistentDrawerLeft(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleLogOut= () => {
+    localStorage.removeItem('token')
+  }
 
   return (
     <div className={classes.root}>
@@ -103,6 +106,7 @@ export default function PersistentDrawerLeft(props) {
             type="submit"
             variant="contained"
             href='/'
+            onClick={handleLogOut}
           >
             Logout
           </Button>

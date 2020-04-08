@@ -7,16 +7,23 @@ const ls = require('local-storage')
 router.post('/login/admin', async (req, res) =>{
     //Check the email
     admin = await Admin.findOne({admin: req.body.username})
-    if(!admin) res.send(`Email or Password is wrong`)
+    if(!admin) {
+        res.status(400).json({
+        message: "Email or password is wrong"
+    })}
 
     //Check the password
     const validPass = await bcrypt.compare(req.body.password, admin.password)
-    if(!validPass) res.send(`Password is wrong`)
+    if(!validPass) {
+        res.status(400).json({
+        message: "Password is wrong"
+    })}
 
     //Create and assign a token
     const token = jwt.sign({ _id: admin._id}, process.env.TOKEN_SECRET_ADMIN, { expiresIn: "1h" })
     ls.set('auth-token', token)
-    res.redirect('/api')
+    // res.redirect('/api')
+    res.send(token)
 })
 
 router.post('/login/user', async (req, res) =>{
