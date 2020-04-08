@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import axios from "axios";
+import { Redirect } from "react-router-dom"; 
 
 export default function RoomReport() {
   const [columns] = useState([
@@ -12,6 +13,7 @@ export default function RoomReport() {
     { title: "Created", field: "timeCreated" },
   ]);
   const [data, setData] = useState([{rooms: []}])
+  const [redirect, setRedirect] = useState(false); 
   
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -23,7 +25,7 @@ export default function RoomReport() {
         setData({ rooms: data });
     })}
     else{
-      //Need to redirect to login page
+      setRedirect(true)
       console.log('Unauthorized')
     }
   }, []);
@@ -36,6 +38,7 @@ export default function RoomReport() {
   }
   const handleUpdate = (id, name) => {
     axios
+    //Not working
       .put(`http://localhost:3001/api/rooms/${id}`, {name}, { headers: {'Content-Type': 'multipart/form-data' }})
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
@@ -51,6 +54,10 @@ export default function RoomReport() {
     },
   }));
   const classes = useStyles();
+
+  if(redirect){
+    return <Redirect to="/login/admin" />
+  }
   return (
     <React.Fragment>
       <div>

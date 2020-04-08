@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import axios from "axios";
+import { Redirect } from "react-router-dom"; 
 
 
 export default function EventsReport() {
@@ -15,6 +16,7 @@ export default function EventsReport() {
     { title: "Timestamp ", field: "time" },
   ]);
   const [data, setData] = useState({ events: [] });
+  const [redirect, setRedirect] = useState(false); 
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -26,9 +28,8 @@ export default function EventsReport() {
         setData({ events: data });
     })}
     else{
-      //Need to redirect to login page
-
       console.log('Unauthorized')
+      setRedirect(true)
     }
   }, []);
 
@@ -48,6 +49,9 @@ export default function EventsReport() {
       .catch(err => console.log(err.message))
   }
   const classes = useStyles();
+  if(redirect){
+    return <Redirect to="/login/admin" />
+  }
   return (
     <React.Fragment>
       <div>

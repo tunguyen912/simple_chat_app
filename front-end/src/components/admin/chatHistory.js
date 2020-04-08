@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import TableContainer from "@material-ui/core/TableContainer";
 import axios from 'axios';
+import { Redirect } from "react-router-dom"; 
+
 
 export default function ChatReport() {
   const [columns] = useState([
@@ -13,6 +15,7 @@ export default function ChatReport() {
       { title: "Timestamp ", field: "time" }
   ]);
   const [data, setData] = useState({chats: []})
+  const [redirect, setRedirect] = useState(false); 
   
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -25,7 +28,7 @@ export default function ChatReport() {
     })}
     else{
       console.log('Unauthorized')
-      //Need to redirect to login page
+      setRedirect(true)
     }
   }, []);
 
@@ -44,6 +47,10 @@ export default function ChatReport() {
     }
   }));
   const classes = useStyles();
+
+  if(redirect){
+    return <Redirect to="/login/admin" />
+  }
   return (
     <React.Fragment>
       <div>
