@@ -11,15 +11,27 @@ export default function RoomReport() {
     { title: "Room Name", field: "roomName" },
     { title: "Created", field: "timeCreated" },
   ]);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([{rooms: []}])
   useEffect(() => {
-  axios
-    .get('http://localhost:3001/api/rooms')
-    .then(({data}) => {
-      setData(data)
-    })
+    axios
+      .get('http://localhost:3001/api/rooms')
+      .then(({data}) => {
+        setData({rooms: data})
+      })
   }, [])
-  
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:3001/api/rooms/${id}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err.message))
+  }
+  const handleUpdate = (id, name) => {
+    axios
+      .put(`http://localhost:3001/api/rooms/${id}`, {name}, { headers: {'Content-Type': 'multipart/form-data' }})
+      .then(res => console.log(res))
+      .catch(err => console.log(err.message))
+    }
+
   const useStyles = makeStyles(theme => ({
 
     table: {
@@ -38,33 +50,32 @@ export default function RoomReport() {
       <TableContainer className={classes.table}>
         <MaterialTable
           columns={columns}
-          data={data}
+          data={data.rooms}
           //Delete and edit is not working
           editable={{
-            onRowUpdate: (newData, oldData) =>
+            onRowUpdate: (newData, selectedData) =>
               new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  if (oldData) {
+                  if (selectedData) {
                     setData((prevState) => {
                       const data = [...prevState.rooms];
-                      data[data.indexOf(oldData)] = newData;
-
+                      handleUpdate(selectedData._id, newData.name)
+                      data[data.indexOf(selectedData)] = newData;
                       //update tren mongodb trc
                       setData({rooms : data })
                     });
                   }
                 }, 600);
               }),
-            onRowDelete: (oldData) =>
+            onRowDelete: (selectedData) =>
               new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
                   setData((prevState) => {
-                    console.log(prevState.rooms);
                     const data = [...prevState.rooms];
-                    data.splice(data.indexOf(oldData), 1);
-                    //lam cai mongodb delete trc khi setdata
+                    handleDelete(selectedData._id)
+                    data.splice(data.indexOf(selectedData), 1);
                     setData({rooms : data })
                   });
                 }, 600);

@@ -12,16 +12,22 @@ export default function ChatReport() {
       { title: "Room", field: "roomName" },
       { title: "Timestamp ", field: "time" }
   ]);
-  const [data, setData] = useState([])
+  const [data, setData] = useState({chats: []})
   
   useEffect(() => {
     axios
-      .get('http://localhost:3001/api/history')
+      .get('http://localhost:3001/api/chats')
       .then(({data}) => {
-        setData(data)
+        setData({ chats: data });
       })
   }, [])
 
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:3001/api/chats/${id}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err.message))
+  }
   const useStyles = makeStyles(theme => ({
     table: {
       marginTop: "5rem",
@@ -39,17 +45,19 @@ export default function ChatReport() {
       <TableContainer className={classes.table}>
         <MaterialTable
           columns={columns}
-          data={data}
+          data={data.chats}
           //Delete
           editable={{
-            onRowDelete: oldData =>
+            onRowDelete: selectedData =>
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
                   setData(prevState => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return { ...prevState, data };
+                    const data = [...prevState.chats];
+                    handleDelete(selectedData._id)
+                    data.splice(data.indexOf(selectedData), 1);
+                    // return { ...prevState, data };
+                    setData({ chats: data });
                   });
                 }, 600);
               })
