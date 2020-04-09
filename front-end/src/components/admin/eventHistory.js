@@ -21,10 +21,17 @@ export default function EventsReport() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     const hasToken = token === null ? false : true
+    // const config = {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': token
+    //   }
+    // }
     if(hasToken){
       axios
         .get("http://localhost:3001/api/eventlog")
         .then(({ data }) => {
+          console.log(data)
           setData({ events: data });
     })}
     else{
@@ -59,6 +66,7 @@ export default function EventsReport() {
       </div>
       <TableContainer className={classes.table}>
         <MaterialTable
+          title="Event History"
           columns={columns}
           data={data.events}
           editable={{

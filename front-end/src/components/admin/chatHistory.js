@@ -58,6 +58,7 @@ export default function ChatReport() {
       </div>
       <TableContainer className={classes.table}>
         <MaterialTable
+          title="Chat History"
           columns={columns}
           data={data.chats}
           //Delete

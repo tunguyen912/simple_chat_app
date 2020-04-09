@@ -61,9 +61,10 @@ router.delete('/rooms/:id', (req, res) => {
         res.send(rooms)
     })
 })
+//Update room name
 router.put('/rooms/:id', (req, res) => {
-    console.log(req.body)
-    Room.findByIdAndUpdate(req.params._id, {$set: {roomName : req.body.name}}).exec((err, rooms) => {
+    console.log(req.body.name)
+    Room.findByIdAndUpdate(req.params.id, {roomName : req.body.name}).exec((err, rooms) => {
         if(err) res.send('Something went wrong!!!')
         res.send(rooms)
     })

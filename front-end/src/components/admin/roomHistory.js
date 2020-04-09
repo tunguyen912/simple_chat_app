@@ -8,9 +8,9 @@ import { Redirect } from "react-router-dom";
 
 export default function RoomReport() {
   const [columns] = useState([
-    { title: "Room ID", field: "_id" },
+    { title: "Room ID", field: "_id", editable: 'never' },
     { title: "Room Name", field: "roomName" },
-    { title: "Created", field: "timeCreated" },
+    { title: "Created", field: "timeCreated", editable: 'never' },
   ]);
   const [data, setData] = useState([{rooms: []}])
   const [redirect, setRedirect] = useState(false); 
@@ -37,9 +37,10 @@ export default function RoomReport() {
       .catch(err => console.log(err.message))
   }
   const handleUpdate = (id, name) => {
+    console.log(name)
     axios
     //Not working
-      .put(`http://localhost:3001/api/rooms/${id}`, {name}, { headers: {'Content-Type': 'multipart/form-data' }})
+      .put(`http://localhost:3001/api/rooms/${id}`, {name})
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
     }
@@ -61,10 +62,11 @@ export default function RoomReport() {
   return (
     <React.Fragment>
       <div>
-        <Toolbar title="Room History" />
+        <Toolbar title="Room List" />
       </div>
       <TableContainer className={classes.table}>
         <MaterialTable
+          title="Room List"
           columns={columns}
           data={data.rooms}
           //Delete and edit is not working
@@ -76,7 +78,8 @@ export default function RoomReport() {
                   if (selectedData) {
                     setData((prevState) => {
                       const data = [...prevState.rooms];
-                      handleUpdate(selectedData._id, newData.name)
+                      // console.log(newData.roomName)
+                      handleUpdate(selectedData._id, newData.roomName)
                       data[data.indexOf(selectedData)] = newData;
                       //update tren mongodb trc
                       setData({rooms : data })
