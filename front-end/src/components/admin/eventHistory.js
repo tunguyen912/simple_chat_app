@@ -23,9 +23,9 @@ export default function EventsReport() {
     const hasToken = token === null ? false : true
     if(hasToken){
       axios
-      .get("http://localhost:3001/api/eventlog")
-      .then(({ data }) => {
-        setData({ events: data });
+        .get("http://localhost:3001/api/eventlog")
+        .then(({ data }) => {
+          setData({ events: data });
     })}
     else{
       console.log('Unauthorized')

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
@@ -7,6 +7,7 @@ import RoomList from './RoomList'
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField'
 import Toolbar from './guest-toolbar'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,6 +38,15 @@ const useStyles = makeStyles((theme) => ({
     
 }));
 function ChatRoom(){
+    const [data, setData] = useState({rooms: []})
+    useEffect(() => {
+        axios
+            .get("http://localhost:3001/api/rooms")
+            .then(({data}) => {
+                setData({rooms: data})
+                console.log(data.rooms)
+            })
+    }, [])
     const classes = useStyles();
     return ( 
         <Fragment>
@@ -50,7 +60,7 @@ function ChatRoom(){
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={classes.paper} style={{textAlign: 'center'}}>
-                            <RoomList />
+                            <RoomList roomList={data.rooms}/>
                         </Paper>
                     </Grid>
                 </Grid>

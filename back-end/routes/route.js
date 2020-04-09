@@ -18,6 +18,8 @@ router.get('/eventlog', (req, res) => {
         res.send(events)
     })
 })
+
+
 router.delete('/eventlog/:id', (req, res) => {
     Event.findByIdAndDelete(req.params.id).exec((err, events) => {
         if(err) res.send('Something went wrong!!!')
@@ -32,12 +34,20 @@ router.get('/chats', (req, res) => {
         res.send(messages)
     })
 })
+//Delete message
 router.delete('/chats/:id', (req, res) => {
     Message.findByIdAndDelete(req.params.id).exec((err, messages) => {
         if(err) res.send('Something went wrong!!!')
         res.send(messages)
     })
 })
+//get chat history in a room
+router.post('/chats/:roomName'), (req, res) => {
+    Message.find({roomName: req.params.roomName}).exec((err, messages) => {
+        if(err) res.send('Something went wrong!!!')
+        res.send(messages)
+    })
+}
 
 router.get('/rooms', (req, res) => {
     Room.find({}).exec((err, rooms) => {
@@ -65,5 +75,6 @@ router.post('/roomhistory/:roomname', (req, res) =>{
         res.render('messageHistory', { data: messages })
     })
 })
+
 
 module.exports = router

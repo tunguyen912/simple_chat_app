@@ -7,19 +7,26 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 class RoomList extends Component {
     state = {  }
+    handleChange = (event) => {
+        // console.log(event.target.value)
+        if(event.target.value !== undefined) {
+
+        }
+    }
     render() { 
         return ( 
             <div>
-                <Typography variant="h5"> Room List</Typography>
+                <Typography>Room List</Typography>
                 <FormControl  style={{minWidth: 120}}>
-                    <InputLabel id="demo-simple-select-label" >Join Room:</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Join Room:</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
+                        onChange={this.handleChange}
                     >
-                        <MenuItem value={'Room1'}>Room1asdfsadfsdafasdfasdfasdfasdfas</MenuItem>
-                        <MenuItem value={'Room2'}>Room2</MenuItem>
-                        <MenuItem value={'Room3'}>Room3</MenuItem>
+                        {this.props.roomList.map((val, index) => {
+                            return <MenuItem key = {val._id} value = {val.roomName}>{val.roomName}</MenuItem>
+                        })}
                     </Select>
                 </FormControl>
             </div>
