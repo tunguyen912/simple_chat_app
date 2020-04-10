@@ -14,7 +14,7 @@ class MessageList extends Component {
       console.log("Data retriveed");
       let currentComponent = this;
       axios
-        .post(`https://api-chat-app.herokuapp.com/api/chats/${this.props.room}`)
+        .post(`/api/chats/${this.props.room}`)
         .then(function (response) {
           let data = response.data;
           console.log(response.data);

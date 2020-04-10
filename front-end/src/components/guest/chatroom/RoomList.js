@@ -31,10 +31,6 @@ class RoomList extends Component {
     event.preventDefault();
   };
 
-
-
-
-
   render() {
     return (
       <React.Fragment>

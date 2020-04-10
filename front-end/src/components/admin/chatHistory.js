@@ -22,7 +22,7 @@ export default function ChatReport() {
     const hasToken = token === null ? false : true
     if(hasToken){
       axios
-      .get("https://api-chat-app.herokuapp.com/api/chats")
+      .get("/api/chats")
       .then(({ data }) => {
         setData({ chats: data });
     })}
@@ -34,7 +34,7 @@ export default function ChatReport() {
 
   const handleDelete = (id) => {
     axios
-      .delete(`https://api-chat-app.herokuapp.com/api/chats/${id}`)
+      .delete(`/api/chats/${id}`)
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
   }

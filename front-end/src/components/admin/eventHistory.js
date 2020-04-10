@@ -22,7 +22,7 @@ export default function EventsReport() {
     const hasToken = token === null ? false : true
     if(hasToken){
       axios
-        .get("https://api-chat-app.herokuapp.com/api/eventlog")
+        .get("/api/eventlog")
         .then(({ data }) => {
           console.log(data)
           setData({ events: data });
@@ -44,7 +44,7 @@ export default function EventsReport() {
 
   const handleDelete = (id) => {
     axios
-      .delete(`https://api-chat-app.herokuapp.com/api/eventlog/${id}`)
+      .delete(`/api/eventlog/${id}`)
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
   }

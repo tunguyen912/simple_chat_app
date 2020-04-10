@@ -20,7 +20,7 @@ export default function RoomReport() {
     const hasToken = token === null ? false : true
     if(hasToken){
       axios
-      .get("https://api-chat-app.herokuapp.com/api/rooms")
+      .get("/api/rooms")
       .then(({ data }) => {
         setData({ rooms: data });
     })}
@@ -32,21 +32,21 @@ export default function RoomReport() {
 
   const handleDelete = (id) => {
     axios
-      .delete(`https://api-chat-app.herokuapp.com/api/rooms/${id}`)
+      .delete(`/api/rooms/${id}`)
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
   }
   const handleUpdate = (id, name) => {
     // console.log(name)
     axios
-      .put(`https://api-chat-app.herokuapp.com/api/rooms/${id}`, {name})
+      .put(`/api/rooms/${id}`, {name})
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
   }
   const handleAdd = (name) => {
     // console.log(name)
     axios
-      .post(`https://api-chat-app.herokuapp.com/api/rooms/add`, {name})
+      .post(`/api/rooms/add`, {name})
       .then(res => {
         console.log(res)
         window.location.reload();
