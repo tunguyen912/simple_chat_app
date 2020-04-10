@@ -76,4 +76,12 @@ router.post("/roomhistory/:roomname", (req, res) => {
   });
 });
 
+router.post("/rooms/add", (req, res) => {
+    console.log(req.body.name)
+    let newRoom = new Room({ roomName: req.body.name })
+    newRoom.save()
+    .then(room => res.send(room))
+    .catch(err => res.send(err))
+})
+
 module.exports = router;

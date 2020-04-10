@@ -37,13 +37,22 @@ export default function RoomReport() {
       .catch(err => console.log(err.message))
   }
   const handleUpdate = (id, name) => {
-    console.log(name)
+    // console.log(name)
     axios
-    //Not working
       .put(`http://localhost:3001/api/rooms/${id}`, {name})
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
-    }
+  }
+  const handleAdd = (name) => {
+    // console.log(name)
+    axios
+      .post(`http://localhost:3001/api/rooms/add`, {name})
+      .then(res => {
+        console.log(res)
+        window.location.reload();
+      })
+      .catch(err => console.log(err.message))
+  }
 
   const useStyles = makeStyles(theme => ({
 
@@ -99,6 +108,18 @@ export default function RoomReport() {
                   });
                 }, 600);
               }),
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve();
+                  setData((prevState) => {
+                    const data = [...prevState.rooms];
+                    handleAdd(newData.roomName)
+                    data.push(newData);
+                    setData({rooms : data })
+              });
+            }, 600);
+          }),
           }}
         />
       </TableContainer>
