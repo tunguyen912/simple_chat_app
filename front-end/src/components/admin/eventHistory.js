@@ -6,7 +6,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import axios from "axios";
 import { Redirect } from "react-router-dom"; 
 
-
 export default function EventsReport() {
   const [columns] = useState([
     { title: "ID", field: "_id" },
@@ -21,15 +20,9 @@ export default function EventsReport() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     const hasToken = token === null ? false : true
-    // const config = {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': token
-    //   }
-    // }
     if(hasToken){
       axios
-        .get("http://localhost:3001/api/eventlog")
+        .get("https://api-chat-app.herokuapp.com/api/eventlog")
         .then(({ data }) => {
           console.log(data)
           setData({ events: data });
@@ -51,7 +44,7 @@ export default function EventsReport() {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3001/api/eventlog/${id}`)
+      .delete(`https://api-chat-app.herokuapp.com/api/eventlog/${id}`)
       .then(res => console.log(res))
       .catch(err => console.log(err.message))
   }

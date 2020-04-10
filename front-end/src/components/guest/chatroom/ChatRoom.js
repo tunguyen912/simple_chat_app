@@ -35,7 +35,7 @@ function ChatRoom() {
   const [data, setData] = useState({ rooms: [] });
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/rooms").then(({ data }) => {
+    axios.get("https://api-chat-app.herokuapp.com/api/rooms").then(({ data }) => {
       setData({ rooms: data });
     });
   }, []);

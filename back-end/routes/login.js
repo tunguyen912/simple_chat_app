@@ -21,7 +21,7 @@ router.post('/login/admin', async (req, res) =>{
 
     //Create and assign a token
     const token = jwt.sign({ _id: admin._id}, process.env.TOKEN_SECRET_ADMIN, { expiresIn: "1h" })
-    ls.set('auth-token', token)
+    // ls.set('auth-token', token)
     // res.redirect('/api')
     res.send(token)
 })

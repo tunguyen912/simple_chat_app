@@ -38,7 +38,7 @@ export default function SignIn() {
   }));
   const handleSubmit = (event) => {
     axios
-      .post('http://localhost:3001/login/admin', {username, password})
+      .post('https://api-chat-app.herokuapp.com/login/admin', {username, password})
       .then(res => {
         if(res.status === 200){
           localStorage.setItem('token', res.data)
